@@ -108,3 +108,90 @@ El modelo **DevOps** acelera la entrega de software y reduce riesgos frente a la
 - **Pregunta retadora:** si el KPI técnico se mantiene, pero cae una métrica de producto (conversión), explica por qué **ambos tipos de métricas** deben coexistir en el gate.
     
     - Cuando un KPI técnico, como los errores 5xx o la latencia p95, se mantiene estable, pero una métrica de producto, como la tasa de conversión, comienza a caer, esto sugiere que el sistema está funcionando bien desde un punto de vista técnico. Sin embargo, hay algo que no está bien en la experiencia del usuario o en el flujo del negocio. Podría ser un cambio en la interfaz o un error en la lógica. Por eso, es crucial que ambos tipos de métricas se monitoreen juntos: los KPIs técnicos aseguran que el sistema sea estable y confiable, mientras que las métricas de producto garantizan que los cambios no perjudiquen la experiencia del usuario ni los objetivos comerciales.
+
+
+# 4.6 Fundamentos prácticos sin comandos (evidencia mínima)
+
+## 1. HTTP - contrato observable
+![imagen.png](imagenes/http-evidencia.png)
+- Método: GET
+
+- Código de estado: 200 OK
+
+## 2. DNS - nombres y TTL
+
+![imagen](imagenes/dns-ttl.png)
+El TTL indica cuánto tiempo los clientes guardan la IP de un dominio antes de volver a consultarla.
+Un TTL alto retrasa la propagación de cambios de IP, generando ventanas de inconsistencia.
+Un TTL bajo permite rollbacks y actualizaciones rápidas, pero aumenta la carga de consultas DNS.
+
+## 3. TLS - seguridad en tránsito
+
+![imagen](imagenes/tls-cert.png.png)
+
+- Si es que el navegador no valida la cadena de certificados, ocurren errores de confianza.
+- Riesgo de MITM (Man In The Middle), ya que la conexión podría no ser segura.
+- Impacta en la experiencia del usuario, mostrando advertencias o bloqueando el acceso.
+## 4. Puertos - estado de runtime
+
+![imagen](imagenes/puertos.png)
+
+- Si un puerto esperado no aparece, el servicio podría no estar desplegado correctamente.
+- Si un puerto aparece ocupado por otro proceso, podría haber conflicto y el servicio no iniciaría.
+## 5. 12-Factor - port binding, configuración, logs
+
+- Port binding: La aplicación toma el puerto desde una variable de entorno (PORT) en lugar de estar fijado en el código. Esto permite cambiar el puerto según el entorno sin recompilar.
+
+- Logs: Se deben enviar a stdout/stderr para que un sistema centralizado los gestione; no conviene escribirlos en archivos locales rotados a mano porque se pierde trazabilidad y escalabilidad.
+
+- Anti-patrón: Guardar credenciales en el código fuente. Esto dificulta la reproducibilidad, incrementa riesgo de exposición y obliga a modificar el código para cada entorno.
+
+## 6. Checklist de diagnóstico (incidente simulado)
+
+| Paso | Objetivo | Evidencia esperada | Interpretación | Acción siguiente |
+| --- | --- | --- | --- | --- |
+| 1 | Verificar contrato HTTP | Respuesta HTTP 200 con cabeceras correctas (`Cache-Control`, `X-Request-ID`) | Si el código no es 200 o faltan cabeceras, el API/endpoint no responde correctamente | Revisar servicio backend y endpoints; reiniciar si es necesario |
+| 2 | Probar resolución DNS | IP obtenida y TTL consistente desde distintos servidores | Si la IP no coincide o hay errores de resolución, DNS está inconsistente | Validar registros DNS, TTL y propagar cambios si es necesario |
+| 3 | Validar TLS | Certificado válido, CN/SAN correcto y vigencia actual | Si certificado caducó o CN incorrecto, navegador mostrará error de confianza | Renovar o desplegar certificado válido |
+| 4 | Comprobar puertos en escucha | Puertos esperados (HTTP 80/443, SSH 22) activos y sin conflictos | Si puerto no está escuchando o está ocupado, servicio inaccesible o conflicto | Configurar puerto correcto y liberar conflicto; reiniciar servicio |
+| 5 | Revisar logs de ejecución | Entradas de requests y errores en `stdout`/`stderr` | Ausencia de logs indica fallo de trazabilidad o error de despliegue | Revisar configuración de logging y flujo de salida; corregir |
+| 6 | Confirmar cabeceras y caché | Cabeceras `Cache-Control` y trazabilidad presentes | Cabeceras incorrectas afectan latencia y observabilidad | Ajustar cabeceras en servidor o proxy; volver a probar HTTP |
+
+
+# 4.7 Desafíos de DevOps y mitigaciones
+
+![imagen](imagenes/desafios_devops.jpeg)
+| Riesgo                                    | Mitigación                                                                                                                               |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Despliegue que rompe producción           | **Rollback:** volver a la versión estable anterior                                                                                       |
+| Error no detectado durante despliegue     | **Despliegues graduales / canary:** liberar a un porcentaje limitado de usuarios antes de full rollout                                   |
+| Cambios con errores por falta de revisión | **Revisión cruzada y límites de “blast radius”:** validar cambios por pares y limitar impacto a un subconjunto de servicios o servidores |
+
+
+### Experimento controlado – Despliegue gradual vs “big-bang”
+
+* **Objetivo:** Comparar riesgo de errores entre despliegue gradual y completo.
+* **Métrica:** Errores en los primeros 30 min (HTTP 5xx, fallos de inicio) tras el despliegue.
+* **Grupo control:** 50% usuarios reciben despliegue gradual, 50% despliegue completo.
+* **Éxito:** Menos errores en el grupo gradual.
+* **Reversión:** Rollback inmediato si errores críticos >5% o caída de servicio.
+
+
+# 4.8 Arquitectura mínima para DevSecOps (HTTP/DNS/TLS + 12-Factor)
+
+![imagen](imagenes/arquitectura-minima.jpeg)
+
+
+### Explicacion de cada capa
+| Capa            | Control aplicado                   | Contribución a seguridad y reproducibilidad                                          |
+| --------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
+| DNS             | TTL y políticas de caché           | Garantiza propagación controlada, reduce inconsistencias, permite rollbacks rápidos  |
+| HTTP / Servicio | Contratos de API y límites de tasa | Asegura que las solicitudes cumplan formato esperado y evita sobrecarga del servicio |
+| TLS             | Validación de certificados         | Protege la comunicación frente a MITM, asegura confianza en los datos transmitidos   |
+
+### Relacion con 12-Factor
+
+| Principio                 | Evidencia operativa                                                                                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Configuración por entorno | La variable de entorno `PORT` o `DATABASE_URL` permite desplegar el mismo código en staging, QA o producción sin cambios; un docente puede revisar diffs mínimos entre entornos. |
+| Logs a stdout             | Los logs se envían a flujo estándar y se pueden recolectar centralizadamente; evidencia visible revisando trazabilidad de logs en tiempo real sin depender de archivos locales.  |
