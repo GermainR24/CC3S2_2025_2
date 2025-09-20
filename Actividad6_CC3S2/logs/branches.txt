@@ -1,0 +1,6 @@
+  develop
+  feature/another-new-feature
+  feature/login-develop
+  feature/new-feature
+  hotfix/bugfix
+* main

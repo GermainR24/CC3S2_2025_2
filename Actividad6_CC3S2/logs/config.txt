@@ -1,0 +1,2 @@
+user.name=GermainR24
+user.email=germain.ronald@gmail.com
