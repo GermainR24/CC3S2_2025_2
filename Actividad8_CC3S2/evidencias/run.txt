@@ -1,0 +1,141 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.3, pluggy-1.6.0 -- /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/act8/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/germain/act8/Curso-CC3S2/labs/Laboratorio3
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-5.0.0, Faker-37.11.0
+collecting ... collected 31 items
+
+tests/test_carrito.py::test_agregar_producto_nuevo PASSED                [  3%]
+tests/test_carrito.py::test_agregar_producto_existente_incrementa_cantidad PASSED [  6%]
+tests/test_carrito.py::test_remover_producto PASSED                      [  9%]
+tests/test_carrito.py::test_remover_producto_completo PASSED             [ 12%]
+tests/test_carrito.py::test_actualizar_cantidad_producto PASSED          [ 16%]
+tests/test_carrito.py::test_actualizar_cantidad_a_cero_remueve_producto PASSED [ 19%]
+tests/test_carrito.py::test_calcular_total PASSED                        [ 22%]
+tests/test_carrito.py::test_aplicar_descuento PASSED                     [ 25%]
+tests/test_carrito.py::test_aplicar_descuento_limites PASSED             [ 29%]
+tests/test_descuentos_parametrizados.py::test_descuento_total[10.0-1-0.0-10.0] PASSED [ 32%]
+tests/test_descuentos_parametrizados.py::test_descuento_total[10.0-1-0.01-9.9] PASSED [ 35%]
+tests/test_descuentos_parametrizados.py::test_descuento_total[10.01-1-0.3333-6.67] PASSED [ 38%]
+tests/test_descuentos_parametrizados.py::test_descuento_total[100.0-1-0.5-50.0] PASSED [ 41%]
+tests/test_descuentos_parametrizados.py::test_descuento_total[1.0-1-0.9999-0.0] PASSED [ 45%]
+tests/test_descuentos_parametrizados.py::test_descuento_total[50.0-1-1.0-0.0] PASSED [ 48%]
+tests/test_idempotencia_cantidades.py::test_actualizacion_idempotente PASSED [ 51%]
+tests/test_precios_frontera.py::test_precios_frontera[0.01] PASSED       [ 54%]
+tests/test_precios_frontera.py::test_precios_frontera[0.005] PASSED      [ 58%]
+tests/test_precios_frontera.py::test_precios_frontera[0.0049] PASSED     [ 61%]
+tests/test_precios_frontera.py::test_precios_frontera[9999999.99] PASSED [ 64%]
+tests/test_precios_frontera.py::test_precios_invalidos[0.0] XPASS (C...) [ 67%]
+tests/test_precios_frontera.py::test_precios_invalidos[-1.0] XPASS (...) [ 70%]
+tests/test_redondeo_acumulado.py::test_redondeo_acumulado_vs_final PASSED [ 74%]
+tests/test_redondeo_acumulado.py::test_redondeo_acumulado_vs_final_difiere PASSED [ 77%]
+tests/test_rgr_precision_rojo.py::test_total_precision_decimal XFAIL     [ 80%]
+tests/test_shopping_cart.py::test_add_item PASSED                        [ 83%]
+tests/test_shopping_cart.py::test_remove_item PASSED                     [ 87%]
+tests/test_shopping_cart.py::test_calculate_total PASSED                 [ 90%]
+tests/test_shopping_cart.py::test_apply_discount PASSED                  [ 93%]
+tests/test_shopping_cart.py::test_process_payment PASSED                 [ 96%]
+tests/test_shopping_cart.py::test_process_payment_failure PASSED         [100%]
+
+=================== 28 passed, 1 xfailed, 2 xpassed in 0.19s ===================
+
+
+
+Impacto:
+La representacion binaria de los numeros flotantes introduce pequeños errores de precision.
+Esto afecta calculos monetarios acumulados. Para mayor exactitud, deberia usarse el tipo Decimal.
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.3, pluggy-1.6.0 -- /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/act8/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/germain/act8/Curso-CC3S2/labs/Laboratorio3
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-5.0.0, Faker-37.11.0
+collecting ... collected 43 items / 40 deselected / 3 selected
+
+tests/test_markers.py::test_smoke_agregar_y_total PASSED                 [ 33%]
+tests/test_markers.py::test_smoke_descuento_basico PASSED                [ 66%]
+tests/test_markers.py::test_smoke_vacio_no_falla PASSED                  [100%]
+
+=============================== warnings summary ===============================
+tests/test_markers.py:4
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:4: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/test_markers.py:10
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:10: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/test_markers.py:16
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:16: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/test_markers.py:21
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:21: PytestUnknownMarkWarning: Unknown pytest.mark.regression - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.regression
+
+tests/test_markers.py:27
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:27: PytestUnknownMarkWarning: Unknown pytest.mark.regression - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.regression
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================= 3 passed, 40 deselected, 5 warnings in 0.21s =================
+
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.3, pluggy-1.6.0 -- /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/act8/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/germain/act8/Curso-CC3S2/labs/Laboratorio3
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-5.0.0, Faker-37.11.0
+collecting ... collected 43 items / 41 deselected / 2 selected
+
+tests/test_markers.py::test_regression_descuento_redondeo PASSED         [ 50%]
+tests/test_markers.py::test_regression_multiples_items_y_descuentos PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/test_markers.py:4
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:4: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/test_markers.py:10
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:10: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/test_markers.py:16
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:16: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/test_markers.py:21
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:21: PytestUnknownMarkWarning: Unknown pytest.mark.regression - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.regression
+
+tests/test_markers.py:27
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_markers.py:27: PytestUnknownMarkWarning: Unknown pytest.mark.regression - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.regression
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================= 2 passed, 41 deselected, 5 warnings in 0.16s =================
+
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.3, pluggy-1.6.0 -- /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/act8/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/germain/act8/Curso-CC3S2/labs/Laboratorio3
+configfile: pytest.ini
+plugins: cov-5.0.0, Faker-37.11.0
+collecting ... collected 1 item
+
+tests/test_estabilidad_semillas.py::test_estabilidad_semillas PASSED     [100%]
+
+=============================== warnings summary ===============================
+tests/test_estabilidad_semillas.py:7
+  /home/germain/act8/Curso-CC3S2/labs/Laboratorio3/tests/test_estabilidad_semillas.py:7: PytestUnknownMarkWarning: Unknown pytest.mark.stability - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.stability
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================= 1 passed, 1 warning in 0.09s =========================
