@@ -1,0 +1,36 @@
+{
+  "module": {
+    "servidores_web": {
+      "resource": [
+        {
+          "null_resource": [
+            {
+              "servidores_web_0": [
+                {
+                  "triggers": {
+                    "factory_uuid": "f31d7122-1001-4800-82fb-fbcff4015eee",
+                    "timestamp": "2025-11-20T23:39:31.582585"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "null_resource": [
+            {
+              "servidores_web_1": [
+                {
+                  "triggers": {
+                    "factory_uuid": "f31d7122-1001-4800-82fb-fbcff4015eee",
+                    "timestamp": "2025-11-20T23:39:31.582585"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

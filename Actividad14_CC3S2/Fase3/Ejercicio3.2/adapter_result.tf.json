@@ -1,0 +1,18 @@
+{
+  "resource": [
+    {
+      "mock_cloud_bucket": {
+        "mi_bucket_datos": {
+          "bucket_name": "mi_bucket_datos",
+          "tags": {
+            "region": "us-east-1",
+            "type": "standard",
+            "factory_uuid": "0e6f8b03-3886-4530-a786-63b243774f78",
+            "timestamp": "2025-11-26T23:42:38.341410"
+          },
+          "provider": "mock_cloud"
+        }
+      }
+    }
+  ]
+}
